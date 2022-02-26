@@ -10,22 +10,52 @@ resource "aws_launch_template" "myproject" {
     security_groups             = [aws_security_group.myproject_instance.id]
   }
 
-  placement {
-    availability_zone = "us-east-1a"
-
+    lifecycle {
+    create_before_destroy = false
   }
 
   tag_specifications {
     resource_type = "instance"
 
     tags = {
-      Name     = "MyProject"
+      Name     = "MyProject-amazon"
       Platform = "amazon"
       cmby     = "Ansible"
-      IaC      = "Terraform"
     }
   }
 
-  user_data = filebase64("install_httpd.sh")
+  user_data = filebase64("amazon.sh")
 
 }
+
+resource "aws_launch_template" "myproject-ubuntu" {
+  name                                 = "myproject-ubuntu"
+  image_id                             = data.aws_ami.ubuntu.id
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type                        = "t2.micro"
+  key_name                             = "ansible"
+
+   lifecycle {
+    create_before_destroy = false
+  }
+
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups             = [aws_security_group.myproject_instance.id]
+  }
+
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name     = "MyProject-ubuntu"
+      Platform = "ubuntu"
+      cmby     = "Ansible"
+    }
+  }
+
+  user_data = filebase64("ubuntu.sh")
+
+}
+

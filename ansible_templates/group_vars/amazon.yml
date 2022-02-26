@@ -1,2 +1,2 @@
 ansible_user: ec2-user
-nginx_root_location: /var/www/html
+nginx_root_location: /usr/share/nginx/html

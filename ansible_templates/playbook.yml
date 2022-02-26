@@ -13,14 +13,14 @@
   # Tasks: the list of tasks that will be executed within the play, this section
   #       can also be used for pre and post tasks
   tasks:
-    - name: Install httpd
+    - name: Install nginx
       package:
-        name: httpd
+        name: nginx
         state: latest
 
-    - name: Restart httpd
+    - name: Restart nginx
       service:
-        name: httpd
+        name: nginx
         state: restarted
       notify: Check HTTP Service
 

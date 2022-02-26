@@ -12,10 +12,22 @@ resource "aws_lb_listener" "myproject_80" {
   protocol          = "HTTP"
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.myproject.arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.myproject.arn
+        weight = 1
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.myproject-ubuntu.arn
+        weight = 1
+      }
+    }
   }
 }
+
 
 resource "aws_lb_listener" "myproject_443" {
   load_balancer_arn = aws_lb.myproject.arn
@@ -25,8 +37,19 @@ resource "aws_lb_listener" "myproject_443" {
   certificate_arn   = "arn:aws:acm:us-east-1:601731900643:certificate/8a7fffb4-9e2e-48f4-bf87-9d2590999f4d"
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.myproject.arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.myproject.arn
+        weight = 1
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.myproject-ubuntu.arn
+        weight = 1
+      }
+    }
   }
 
 }

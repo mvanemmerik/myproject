@@ -22,6 +22,7 @@ resource "aws_security_group" "myproject_instance" {
   }
 
   vpc_id = "vpc-00aa9a5954b477f89"
+
 }
 
 resource "aws_security_group" "myproject_lb" {
