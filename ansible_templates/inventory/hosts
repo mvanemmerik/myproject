@@ -1,0 +1,17 @@
+[tag_Platform_amazon]
+
+[tag_Platform_ubuntu]
+
+[ubuntu:children]
+tag_Platform_ubuntu
+
+[amazon:children]
+tag_Platform_amazon
+
+[linux:children]
+amazon
+ubuntu
+
+[all:vars]
+ansible_become=true
+
