@@ -2,7 +2,7 @@ resource "aws_autoscaling_group" "myproject" {
   name             = "myproject"
   min_size         = 0
   max_size         = 2
-  desired_capacity = 2
+  desired_capacity = 1
   launch_template {
     id      = aws_launch_template.myproject.id
     version = "$Latest"
