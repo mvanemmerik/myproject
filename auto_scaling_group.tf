@@ -3,17 +3,34 @@ resource "aws_autoscaling_group" "myproject" {
   min_size         = 0
   max_size         = 1
   desired_capacity = 1
+  # launch_configuration = aws_launch_configuration.myproject.name
   launch_template {
     id      = aws_launch_template.myproject.id
     version = "$Latest"
   }
+
   vpc_zone_identifier = ["subnet-0de79979472359bc7", "subnet-076193e2726917564"]
+
+  lifecycle {
+    ignore_changes = [desired_capacity, target_group_arns]
+  }
 
   tag {
     key                 = "Name"
     value               = "MyProject-amazon"
     propagate_at_launch = true
   }
+  tag {
+    key                 = "Platform"
+    value               = "amazon"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "cmby"
+    value               = "Ansible"
+    propagate_at_launch = true
+  }
+
 }
 
 resource "aws_autoscaling_schedule" "myproject_day" {
@@ -21,7 +38,7 @@ resource "aws_autoscaling_schedule" "myproject_day" {
   min_size              = 0
   max_size              = 1
   desired_capacity      = 1
-  start_time            = "2022-02-27T12:00:00Z"
+  start_time            = "2022-02-28T12:00:00Z"
   recurrence            = "00 12 * * *"
 
   autoscaling_group_name = aws_autoscaling_group.myproject.name
@@ -32,7 +49,7 @@ resource "aws_autoscaling_schedule" "myproject_night" {
   min_size               = 0
   max_size               = 1
   desired_capacity       = 0
-  start_time             = "2022-02-27T02:00:00Z"
+  start_time             = "2022-02-28T02:00:00Z"
   recurrence             = "00 02 * * *"
   autoscaling_group_name = aws_autoscaling_group.myproject.name
 }
@@ -42,15 +59,31 @@ resource "aws_autoscaling_group" "myproject-ubuntu" {
   min_size         = 0
   max_size         = 1
   desired_capacity = 1
+  # launch_configuration = aws_launch_configuration.myproject-ubuntu.name
   launch_template {
     id      = aws_launch_template.myproject-ubuntu.id
     version = "$Latest"
   }
+
   vpc_zone_identifier = ["subnet-0de79979472359bc7", "subnet-076193e2726917564"]
+
+  lifecycle {
+    ignore_changes = [desired_capacity, target_group_arns]
+  }
 
   tag {
     key                 = "Name"
     value               = "MyProject-ubuntu"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Platform"
+    value               = "ubuntu"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "cmby"
+    value               = "Ansible"
     propagate_at_launch = true
   }
 }
@@ -59,8 +92,8 @@ resource "aws_autoscaling_schedule" "myproject-ubuntu_day" {
   scheduled_action_name = "day"
   min_size              = 0
   max_size              = 1
-  desired_capacity      = 1
-  start_time            = "2022-02-27T12:00:00Z"
+  desired_capacity      = 0
+  start_time            = "2022-02-28T12:00:00Z"
   recurrence            = "00 12 * * *"
 
   autoscaling_group_name = aws_autoscaling_group.myproject-ubuntu.name
@@ -71,7 +104,7 @@ resource "aws_autoscaling_schedule" "myproject-ubuntu_night" {
   min_size               = 0
   max_size               = 1
   desired_capacity       = 0
-  start_time             = "2022-02-27T02:00:00Z"
+  start_time             = "2022-02-28T02:00:00Z"
   recurrence             = "00 02 * * *"
   autoscaling_group_name = aws_autoscaling_group.myproject-ubuntu.name
 }

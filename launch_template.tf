@@ -10,7 +10,7 @@ resource "aws_launch_template" "myproject" {
     security_groups             = [aws_security_group.myproject_instance.id]
   }
 
-    lifecycle {
+  lifecycle {
     create_before_destroy = false
   }
 
@@ -35,7 +35,7 @@ resource "aws_launch_template" "myproject-ubuntu" {
   instance_type                        = "t2.micro"
   key_name                             = "ansible"
 
-   lifecycle {
+  lifecycle {
     create_before_destroy = false
   }
 

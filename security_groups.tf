@@ -1,5 +1,6 @@
 resource "aws_security_group" "myproject_instance" {
   name = "myproject-instance"
+
   ingress {
     from_port       = 80
     to_port         = 80
@@ -18,7 +19,6 @@ resource "aws_security_group" "myproject_instance" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-    # security_groups = [aws_security_group.myproject_lb.id]
   }
 
   vpc_id = "vpc-00aa9a5954b477f89"
@@ -27,6 +27,7 @@ resource "aws_security_group" "myproject_instance" {
 
 resource "aws_security_group" "myproject_lb" {
   name = "myproject-lb"
+
   ingress {
     from_port   = 80
     to_port     = 80
