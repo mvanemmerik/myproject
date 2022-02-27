@@ -4,6 +4,9 @@ resource "aws_lb" "myproject" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.myproject_lb.id]
   subnets            = ["subnet-0de79979472359bc7", "subnet-076193e2726917564"]
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "aws_lb_listener" "myproject_80" {
@@ -25,6 +28,9 @@ resource "aws_lb_listener" "myproject_80" {
         weight = 1
       }
     }
+  }
+  lifecycle {
+    ignore_changes = [tags]
   }
 }
 
@@ -50,6 +56,9 @@ resource "aws_lb_listener" "myproject_443" {
         weight = 1
       }
     }
+  }
+  lifecycle {
+    ignore_changes = [tags]
   }
 
 }

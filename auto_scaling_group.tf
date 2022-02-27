@@ -12,7 +12,7 @@ resource "aws_autoscaling_group" "myproject" {
   vpc_zone_identifier = ["subnet-0de79979472359bc7", "subnet-076193e2726917564"]
 
   lifecycle {
-    ignore_changes = [desired_capacity, target_group_arns]
+    ignore_changes = [desired_capacity, target_group_arns, tags]
   }
 
   tag {
@@ -68,7 +68,7 @@ resource "aws_autoscaling_group" "myproject-ubuntu" {
   vpc_zone_identifier = ["subnet-0de79979472359bc7", "subnet-076193e2726917564"]
 
   lifecycle {
-    ignore_changes = [desired_capacity, target_group_arns]
+    ignore_changes = [desired_capacity, target_group_arns, tags]
   }
 
   tag {

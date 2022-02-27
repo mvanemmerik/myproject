@@ -12,6 +12,7 @@ resource "aws_launch_template" "myproject" {
 
   lifecycle {
     create_before_destroy = false
+    ignore_changes        = [tags]
   }
 
   tag_specifications {
@@ -37,7 +38,9 @@ resource "aws_launch_template" "myproject-ubuntu" {
 
   lifecycle {
     create_before_destroy = false
+    ignore_changes        = [tags]
   }
+
 
   network_interfaces {
     associate_public_ip_address = true

@@ -1,8 +1,11 @@
 resource "aws_lb_target_group" "myproject" {
-  name     = "myproject-asg"
+  name     = "myproject-amazon-asg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = "vpc-00aa9a5954b477f89"
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "aws_lb_target_group" "myproject-ubuntu" {
@@ -10,6 +13,9 @@ resource "aws_lb_target_group" "myproject-ubuntu" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = "vpc-00aa9a5954b477f89"
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "aws_autoscaling_attachment" "myproject" {
