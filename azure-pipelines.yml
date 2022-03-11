@@ -1,19 +1,77 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+parameters:
+- name: image
+  displayName: Pool Image
+  type: string
+  default: ubuntu-latest
+  values:
+  - windows-latest
+  - ubuntu-latest
+  - macOS-latest
 
-trigger:
-- main
+- name: tfWorkspace
+  displayName: tfWorkspace
+  type: string
+  default: dev
+  values:
+  - dev
+  - non-prod
+  - prod
 
-pool:
-  vmImage: ubuntu-latest
+stages:
+- stage: validate_stage
+  jobs:
+  - job: validate_job
+    continueOnError: false
+    steps:
+    - task: TerraformTaskV2@2
+      displayName: "Terraform init"
+      inputs:
+        provider: "aws"
+        command: "init"
+        backendServiceAWS: "AWS-monty-ckpo"
+        backendAWSBucketName: "ckpo-terraform-state"
+        backendAWSKey: "azure.tfstate"
+      
+    - task: TerraformTaskV2@2
+      displayName: "Terraform validate"
+      inputs:
+        provider: "aws"
+        command: "validate"
+        environmentServiceNameAWS: "AWS-monty-ckpo"
+      env:
+        TF_WORKSPACE: ${{ parameters.tfWorkspace }}
+- stage: deploy_stage
+  jobs:
+  - deployment: deployment
+    continueOnError: false
+    environment: "test"
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+            - task: TerraformTaskV2@2
+              displayName: "Terraform init"
+              inputs:
+                provider: "aws"
+                command: "init"
+                backendServiceAWS: "AWS-monty-ckpo"
+                backendAWSBucketName: "ckpo-terraform-state"
+                backendAWSKey: "azure.tfstate"
+            - task: TerraformTaskV2@2
+              displayName: "Terraform plan"
+              inputs:
+                provider: "aws"
+                command: "plan"
+                environmentServiceNameAWS: "AWS-monty-ckpo"
+              env:
+                TF_WORKSPACE: ${{ parameters.tfWorkspace }}
+            - task: TerraformTaskV2@2
+              displayName: "Terraform apply"
+              inputs:
+                provider: "aws"
+                command: "apply"
+                environmentServiceNameAWS: "AWS-monty-ckpo"
+              env:
+                TF_WORKSPACE: ${{ parameters.tfWorkspace }}
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
