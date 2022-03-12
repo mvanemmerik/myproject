@@ -13,7 +13,7 @@ stages:
         command: "init"
         backendServiceAWS: "AWS-azure-ckpo"
         backendAWSBucketName: "ckpo-terraform-state"
-        backendAWSKey: "azure.tfstate"
+        backendAWSKey: "myTerraformAnsibelProject.tfstate"
       
     - task: TerraformTaskV2@2
       displayName: "Terraform validate"
