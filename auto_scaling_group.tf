@@ -1,6 +1,6 @@
 resource "aws_autoscaling_group" "myproject" {
   name             = "myproject-amazon"
-  min_size         = 1
+  min_size         = 0
   max_size         = 1
   desired_capacity = 0
   # launch_configuration = aws_launch_configuration.myproject.name
@@ -56,7 +56,7 @@ resource "aws_autoscaling_schedule" "myproject_night" {
 
 resource "aws_autoscaling_group" "myproject-ubuntu" {
   name             = "myproject-ubuntu"
-  min_size         = 1
+  min_size         = 0
   max_size         = 1
   desired_capacity = 0
   # launch_configuration = aws_launch_configuration.myproject-ubuntu.name
