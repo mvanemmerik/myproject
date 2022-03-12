@@ -1,8 +1,8 @@
 resource "aws_autoscaling_group" "myproject" {
-  name             = "myproject"
+  name             = "myproject-amazon"
   min_size         = 0
   max_size         = 1
-  desired_capacity = 1
+  desired_capacity = 0
   # launch_configuration = aws_launch_configuration.myproject.name
   launch_template {
     id      = aws_launch_template.myproject.id
@@ -37,8 +37,8 @@ resource "aws_autoscaling_schedule" "myproject_day" {
   scheduled_action_name = "day"
   min_size              = 0
   max_size              = 1
-  desired_capacity      = 1
-  start_time            = "2022-02-28T12:00:00Z"
+  desired_capacity      = 0
+  start_time            = "2022-03-12T14:00:00Z"
   recurrence            = "00 12 * * *"
 
   autoscaling_group_name = aws_autoscaling_group.myproject.name
@@ -49,7 +49,7 @@ resource "aws_autoscaling_schedule" "myproject_night" {
   min_size               = 0
   max_size               = 1
   desired_capacity       = 0
-  start_time             = "2022-02-27T23:00:00Z"
+  start_time             = "2022-03-12T20:00:00Z"
   recurrence             = "00 23 * * *"
   autoscaling_group_name = aws_autoscaling_group.myproject.name
 }
@@ -58,7 +58,7 @@ resource "aws_autoscaling_group" "myproject-ubuntu" {
   name             = "myproject-ubuntu"
   min_size         = 0
   max_size         = 1
-  desired_capacity = 1
+  desired_capacity = 0
   # launch_configuration = aws_launch_configuration.myproject-ubuntu.name
   launch_template {
     id      = aws_launch_template.myproject-ubuntu.id
@@ -92,8 +92,8 @@ resource "aws_autoscaling_schedule" "myproject-ubuntu_day" {
   scheduled_action_name = "day"
   min_size              = 0
   max_size              = 1
-  desired_capacity      = 1
-  start_time            = "2022-02-28T14:00:00Z"
+  desired_capacity      = 0
+  start_time            = "2022-03-12T16:00:00Z"
   recurrence            = "00 14 * * *"
 
   autoscaling_group_name = aws_autoscaling_group.myproject-ubuntu.name
@@ -104,7 +104,7 @@ resource "aws_autoscaling_schedule" "myproject-ubuntu_night" {
   min_size               = 0
   max_size               = 1
   desired_capacity       = 0
-  start_time             = "2022-02-27T22:00:00Z"
+  start_time             = "2022-03-12T20:00:00Z"
   recurrence             = "00 22 * * *"
   autoscaling_group_name = aws_autoscaling_group.myproject-ubuntu.name
 }

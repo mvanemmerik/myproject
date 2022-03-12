@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "ckpo-terraform-state"
-    key            = "myproject"
+    key            = "myTerraformAnsibelProject.state"
     dynamodb_table = "ckpo-terraform-state-lock"
     region         = "us-east-1"
   }

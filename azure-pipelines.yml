@@ -1,13 +1,3 @@
-parameters:
-- name: tfWorkspace
-  displayName: tfWorkspace
-  type: string
-  default: dev
-  values:
-  - dev
-  - non-prod
-  - prod
-
 pool: Default
 
 stages:
@@ -31,8 +21,7 @@ stages:
         provider: "aws"
         command: "validate"
         environmentServiceNameAWS: "AWS-azure-ckpo"
-      env:
-        TF_WORKSPACE: ${{ parameters.tfWorkspace }}
+
 - stage: deploy_stage
   jobs:
   - deployment: deployment
@@ -57,14 +46,9 @@ stages:
                 provider: "aws"
                 command: "plan"
                 environmentServiceNameAWS: "AWS-azure-ckpo"
-              env:
-                TF_WORKSPACE: ${{ parameters.tfWorkspace }}
             - task: TerraformTaskV2@2
               displayName: "Terraform apply"
               inputs:
                 provider: "aws"
                 command: "apply"
                 environmentServiceNameAWS: "AWS-azure-ckpo"
-              env:
-                TF_WORKSPACE: ${{ parameters.tfWorkspace }}
-
