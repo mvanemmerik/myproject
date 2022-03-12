@@ -1,13 +1,4 @@
 parameters:
-- name: image
-  displayName: Pool Image
-  type: string
-  default: ubuntu-latest
-  values:
-  - windows-latest
-  - ubuntu-latest
-  - macOS-latest
-
 - name: tfWorkspace
   displayName: tfWorkspace
   type: string
@@ -16,6 +7,8 @@ parameters:
   - dev
   - non-prod
   - prod
+
+pool: Default
 
 stages:
 - stage: validate_stage
@@ -28,7 +21,7 @@ stages:
       inputs:
         provider: "aws"
         command: "init"
-        backendServiceAWS: "AWS-monty-ckpo"
+        backendServiceAWS: "AWS-azure-ckpo"
         backendAWSBucketName: "ckpo-terraform-state"
         backendAWSKey: "azure.tfstate"
       
@@ -37,7 +30,7 @@ stages:
       inputs:
         provider: "aws"
         command: "validate"
-        environmentServiceNameAWS: "AWS-monty-ckpo"
+        environmentServiceNameAWS: "AWS-azure-ckpo"
       env:
         TF_WORKSPACE: ${{ parameters.tfWorkspace }}
 - stage: deploy_stage
@@ -55,7 +48,7 @@ stages:
               inputs:
                 provider: "aws"
                 command: "init"
-                backendServiceAWS: "AWS-monty-ckpo"
+                backendServiceAWS: "AWS-azure-ckpo"
                 backendAWSBucketName: "ckpo-terraform-state"
                 backendAWSKey: "azure.tfstate"
             - task: TerraformTaskV2@2
@@ -63,7 +56,7 @@ stages:
               inputs:
                 provider: "aws"
                 command: "plan"
-                environmentServiceNameAWS: "AWS-monty-ckpo"
+                environmentServiceNameAWS: "AWS-azure-ckpo"
               env:
                 TF_WORKSPACE: ${{ parameters.tfWorkspace }}
             - task: TerraformTaskV2@2
@@ -71,7 +64,7 @@ stages:
               inputs:
                 provider: "aws"
                 command: "apply"
-                environmentServiceNameAWS: "AWS-monty-ckpo"
+                environmentServiceNameAWS: "AWS-azure-ckpo"
               env:
                 TF_WORKSPACE: ${{ parameters.tfWorkspace }}
 
